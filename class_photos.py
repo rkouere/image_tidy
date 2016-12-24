@@ -10,13 +10,23 @@ class picutre_tidy(object):
         Initialise the path to parse
         path = the path to parse
         '''
-        self.path = path
+        self.path = self.check_path_without_slash(path)
+        self.check_path_without_slash(path)
         self.pattern_file_name = re.compile('.*(jpg|mp4)')
         self.pattern_get_folder_name = 'IMG_(\d*)_.*\.jpg'
         self.folder_names = []
         self.get_images()
         self.get_folder_names()
         self.folder_out = self.path
+
+    def check_path_without_slash(self, path):
+        '''
+        Checks that the path does not finish with a slash
+        '''
+        if path[-1] is "/":
+            return path[:-1]
+        else:
+            return path
 
     def get_images(self):
         '''
@@ -77,6 +87,11 @@ class picutre_tidy(object):
             if not os.path.exists(self.destination_folder_path + '/' + folder):
                 os.makedirs(self.destination_folder_path + '/' + folder)
 
+    def move_files(self):
+        '''
+        Moves each file to its folder.
+        '''
+        
         
 
 
