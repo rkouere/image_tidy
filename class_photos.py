@@ -2,7 +2,7 @@ import argparse
 import sys
 import os
 import re
-
+import logging
 
 class picutre_tidy(object):
     def __init__(self, path):
@@ -32,6 +32,7 @@ class picutre_tidy(object):
         '''
         Get a list of the files in the folder
         '''
+        logging.info("Getting all the images/mp4 from " + self.path)
         self.pictures = os.listdir(self.path)
 
     def _check_image_extention(self, name):
@@ -63,17 +64,19 @@ class picutre_tidy(object):
         Goes through the file names and get the folder names
         if they do not exists.
         '''
+        logging.info("Generates the folder names from the filenames")
         regex_result_tmp = ""
         date_tmp = ""
         for pic in self.pictures:
             if self.get_folder_name_from_filename(pic) is not None:
                 self.folder_names.append(self.get_folder_name_from_filename(pic))
-        print(self.folder_names)
+        logging.debug(self.folder_names)
 
     def add_out_folder(self, path):
         '''
         Adds the path of the destination folder and creates it if needed.
         '''
+        logging.info("Creating the destination folder if it doesn't exist")
         self.destination_folder_path = path
         if not os.path.exists(path):
             os.makedirs(path)
@@ -82,8 +85,9 @@ class picutre_tidy(object):
         '''
         Creates the folders
         '''
+        logging.info("Creating the folders on disk for each month")
         for folder in self.folder_names:
-            print(self.path + "/" + folder)
+            logging.debug("Creating folder " + self.path + "/" + folder)
             if not os.path.exists(self.destination_folder_path + '/' + folder):
                 os.makedirs(self.destination_folder_path + '/' + folder)
 
@@ -100,6 +104,7 @@ class picutre_tidy(object):
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
     # Install the argument parser. Initiate the description with the docstring
     argparser = argparse.ArgumentParser(
         description=sys.modules[__name__].__doc__)
