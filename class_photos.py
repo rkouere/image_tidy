@@ -99,29 +99,30 @@ class picutre_tidy(object):
         '''
         logging.info("Copying each files to its corresponding folder")
         folder_name = ""
+        tmp_destination_folder = ""
+
         for pic in self.pictures:
             folder_name = self._get_folder_name_from_filename(pic)
+            #if we can't retrieve a folder name from the file name, we can't copy the file.
             if folder_name is None:
                 logging.debug("can't file " + pic)
                 self.unclassed_files.append(pic)
             else:
+                tmp_destination_folder = self.destination_folder_path
+                tmp_destination_folder += "/"
+                tmp_destination_folder += folder_name
+                tmp_destination_folder += "/"
+                tmp_destination_folder += pic
+                #if os.path.isfile(tmp_destination_folder)
                 logging.debug("copying file "
                         + pic
                         + " from " 
                         + self.path + "/" + pic 
                         + " to "
-                        + self.destination_folder_path 
-                        + "/"
-                        + folder_name
-                        + "/"
-                        + pic
+                        + tmp_destination_folder 
                         )
                 copyfile(self.path + "/" + pic, 
-                        self.destination_folder_path
-                        + "/"
-                        + folder_name
-                        + "/"
-                        + pic
+                        tmp_destination_folder
                         )
                 if self.unclassed_files:
                     print("Could not class the following files: \n" + "\n".join(self.unclassed_files))
