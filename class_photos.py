@@ -133,7 +133,7 @@ class picutre_tidy(object):
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
+    #dealing with the logging level
     # Install the argument parser. Initiate the description with the docstring
     argparser = argparse.ArgumentParser(
         description=sys.modules[__name__].__doc__)
@@ -145,7 +145,19 @@ def main():
     argparser.add_argument("-o",
                            '--folder_out',
                            help="The path of the folder where the pics have to be copied")
+    argparser.add_argument("-l", 
+                        "--log", 
+                        dest="logLevel", 
+                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'], 
+                        help="Set the logging level")
     arguments = argparser.parse_args()
+    
+    if arguments.logLevel:
+        logging.basicConfig(level=getattr(logging, arguments.logLevel))
+    else:
+        logging.basicConfig(level=logging.INFO)
+    
+    
     prog = picutre_tidy(arguments.folder_in)
     if arguments.folder_out is not None:
         prog.add_out_folder(arguments.folder_out)
