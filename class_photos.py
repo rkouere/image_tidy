@@ -146,15 +146,16 @@ class picutre_tidy(object):
         delete_files = input( "Do you want to delete the original files from " 
                 + self.path
                 + "? [Y/N]")
-        if delete_files[0] is "Y" or "y":
+        logging.debug(delete_files[0])
+        if delete_files[0] is "Y" or delete_files[0] is "y":
             if self.unclassed_files:
                 keep_unclassed_files = input("The following files have not been treated (probably because they do not follow the required naming convention). Do you want to move them at the root of " 
                         + self.destination_folder_path
                         + "[Y/N]")
-                if keep_unclassed_files is "Y" or "y":
+                if keep_unclassed_files is "Y" or keep_unclassed_files is "y":
                     self.move_unclassed_files_in_root_destination()
-        for pic in self.pictures:
-            os.remove(self.path + "/" + pic)
+            for pic in self.pictures:
+                os.remove(self.path + "/" + pic)
 
 
 #print(os.listdir("/home/rkouere/Pictures"))
