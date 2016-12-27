@@ -6,7 +6,8 @@ It will work on any jpg or 3gp file which follows the following pattern: [any le
 
 Usage:
 ```
-class_photos.py [-h] -i FOLDER_IN [-o FOLDER_OUT]
+usage: class_photos.py [-h] -i FOLDER_IN [-o FOLDER_OUT]
+                       [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 class_photos.py: error: the following arguments are required: -i/--folder_in
 ```
 
