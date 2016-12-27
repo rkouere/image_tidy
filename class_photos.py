@@ -50,12 +50,12 @@ class picutre_tidy(object):
         If not: returns None
         '''
         if self._check_image_extention(filename):
+            logging.debug("Image extention OK")
             m = re.search(self.pattern_get_folder_name, filename)
             if m is not None:
+                logging.debug("coucou")
                 regex_result_tmp = m.group(1)
-                date_tmp = regex_result_tmp[4:6] + "-" + regex_result_tmp[0:4]
-                if date_tmp not in self.folder_names:
-                    return date_tmp
+                return regex_result_tmp[4:6] + "-" + regex_result_tmp[0:4]
             else:
                 return None
 
@@ -65,11 +65,12 @@ class picutre_tidy(object):
         if they do not exists.
         '''
         logging.info("Generates the folder names from the filenames")
-        regex_result_tmp = ""
         date_tmp = ""
         for pic in self.pictures:
-            if self._get_folder_name_from_filename(pic) is not None:
-                self.folder_names.append(self._get_folder_name_from_filename(pic))
+            date_tmp = self._get_folder_name_from_filename(pic)
+            if date_tmp is not None:
+                if date_tmp not in self.folder_names:
+                    self.folder_names.append(date_tmp)
         logging.debug(self.folder_names)
 
     def add_out_folder(self, path):
@@ -91,11 +92,13 @@ class picutre_tidy(object):
             if not os.path.exists(self.destination_folder_path + '/' + folder):
                 os.makedirs(self.destination_folder_path + '/' + folder)
 
-    def move_files(self):
+    def copy_files(self):
         '''
-        Moves each file to its folder.
+        Copy each file to its corresponding folder.
         '''
-        
+        logging.info("Copying each files to its corresponding folder")
+        for pic in self.pictures:
+            print(self._get_folder_name_from_filename(pic))
         
 
 
@@ -121,6 +124,7 @@ def main():
     if arguments.folder_out is not None:
         prog.add_out_folder(arguments.folder_out)
     prog.create_folders()
+    prog.copy_files()
 
 # This is a Python's special:
 # The only way to tell wether we are running the program as a binary,
