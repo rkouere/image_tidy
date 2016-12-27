@@ -13,8 +13,9 @@ class picutre_tidy(object):
         '''
         self.path = self.check_path_without_slash(path)
         self.check_path_without_slash(path)
+        self.unclassed_images = []
         self.pattern_file_name = ["jpg", "3gp"]
-        self.pattern_get_folder_name = '(?:VID|IMG)_(\d*)_.*'
+        self.pattern_get_folder_name = '[A-Za-z]*_(\d*)_.*'
         self.folder_names = []
         self.get_images()
         self.get_folder_names()
@@ -97,26 +98,33 @@ class picutre_tidy(object):
         Copy each file to its corresponding folder.
         '''
         logging.info("Copying each files to its corresponding folder")
+        folder_name = ""
         for pic in self.pictures:
-            logging.debug("##########file " + pic)
-            logging.debug("copying file "
-                    + pic
-                    + " from " 
-                    + self.path + "/" + pic 
-                    + " to "
-                    + self.destination_folder_path 
-                    + "/"
-                    + self._get_folder_name_from_filename(pic)
-                    + "/"
-                    + pic
-                    )
-            copyfile(self.path + "/" + pic, 
-                    self.destination_folder_path
-                    + "/"
-                    + self._get_folder_name_from_filename(pic)
-                    + "/"
-                    + pic
-                    )
+            folder_name = self._get_folder_name_from_filename(pic)
+            if folder_name is None:
+                logging.debug("can't file " + pic)
+                self.unclassed_images.append(pic)
+            else:
+                logging.debug("copying file "
+                        + pic
+                        + " from " 
+                        + self.path + "/" + pic 
+                        + " to "
+                        + self.destination_folder_path 
+                        + "/"
+                        + folder_name
+                        + "/"
+                        + pic
+                        )
+                copyfile(self.path + "/" + pic, 
+                        self.destination_folder_path
+                        + "/"
+                        + folder_name
+                        + "/"
+                        + pic
+                        )
+                if self.unclassed_images:
+                    print("Could not class the following files: \n" + "\n".join(self.unclassed_images))
         
 
 
