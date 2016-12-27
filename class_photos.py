@@ -50,10 +50,8 @@ class picutre_tidy(object):
         If not: returns None
         '''
         if self._check_image_extention(filename):
-            logging.debug("Image extention OK")
             m = re.search(self.pattern_get_folder_name, filename)
             if m is not None:
-                logging.debug("coucou")
                 regex_result_tmp = m.group(1)
                 return regex_result_tmp[4:6] + "-" + regex_result_tmp[0:4]
             else:
