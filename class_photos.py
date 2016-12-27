@@ -13,7 +13,7 @@ class picutre_tidy(object):
         '''
         self.path = self.check_path_without_slash(path)
         self.check_path_without_slash(path)
-        self.unclassed_images = []
+        self.unclassed_files = []
         self.pattern_file_name = ["jpg", "3gp"]
         self.pattern_get_folder_name = '[A-Za-z]*_(\d*)_.*'
         self.folder_names = []
@@ -103,7 +103,7 @@ class picutre_tidy(object):
             folder_name = self._get_folder_name_from_filename(pic)
             if folder_name is None:
                 logging.debug("can't file " + pic)
-                self.unclassed_images.append(pic)
+                self.unclassed_files.append(pic)
             else:
                 logging.debug("copying file "
                         + pic
@@ -123,9 +123,37 @@ class picutre_tidy(object):
                         + "/"
                         + pic
                         )
-                if self.unclassed_images:
-                    print("Could not class the following files: \n" + "\n".join(self.unclassed_images))
-        
+                if self.unclassed_files:
+                    print("Could not class the following files: \n" + "\n".join(self.unclassed_files))
+
+    def move_unclassed_files_in_root_destination(self):
+        for pic in self.unclassed_files:
+            copyfile(self.path + "/" + pic, 
+                       self.destination_folder_path
+                       + "/"
+                       + pic
+                       )
+
+
+    def finishing_up(self):
+        '''
+        Asks if the user wants to delete the original files
+        If yes:
+        - If there are files that have not been processed, asks if the user wants to save them at the root of the destination folder
+        Remove the files
+        '''
+        delete_files = input( "Do you want to delete the original files from " 
+                + self.path
+                + "? [Y/N]")
+        if delete_files[0] is "Y" or "y":
+            if self.unclassed_files:
+                keep_unclassed_files = input("The following files have not been treated. Do you want to move them at the root of " 
+                        + self.destination_folder_path
+                        + "[Y/N]")
+                if keep_unclassed_files is "Y" or "y":
+                    self.move_unclassed_files_in_root_destination()
+        for pic in self.pictures:
+            os.remove(self.path + "/" + pic)
 
 
 #print(os.listdir("/home/rkouere/Pictures"))
@@ -163,6 +191,7 @@ def main():
         prog.add_out_folder(arguments.folder_out)
     prog.create_folders()
     prog.copy_files()
+    prog.finishing_up()
 
 # This is a Python's special:
 # The only way to tell wether we are running the program as a binary,
