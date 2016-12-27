@@ -3,6 +3,7 @@ import sys
 import os
 import re
 import logging
+from shutil import copyfile
 
 class picutre_tidy(object):
     def __init__(self, path):
@@ -12,8 +13,8 @@ class picutre_tidy(object):
         '''
         self.path = self.check_path_without_slash(path)
         self.check_path_without_slash(path)
-        self.pattern_file_name = re.compile('.*(jpg|mp4)')
-        self.pattern_get_folder_name = 'IMG_(\d*)_.*\.jpg'
+        self.pattern_file_name = ["jpg", "3gp"]
+        self.pattern_get_folder_name = '(?:VID|IMG)_(\d*)_.*'
         self.folder_names = []
         self.get_images()
         self.get_folder_names()
@@ -40,7 +41,7 @@ class picutre_tidy(object):
         Checks that the files are jpgs
         '''
         # if the filename finishes is an image/video
-        if self.pattern_file_name.match(name) is not None:
+        if name.endswith(tuple(self.pattern_file_name)) is not False:
             return True
 
     def _get_folder_name_from_filename(self, filename):
@@ -56,6 +57,7 @@ class picutre_tidy(object):
                 return regex_result_tmp[4:6] + "-" + regex_result_tmp[0:4]
             else:
                 return None
+        return None
 
     def get_folder_names(self):
         '''
@@ -96,7 +98,25 @@ class picutre_tidy(object):
         '''
         logging.info("Copying each files to its corresponding folder")
         for pic in self.pictures:
-            print(self._get_folder_name_from_filename(pic))
+            logging.debug("##########file " + pic)
+            logging.debug("copying file "
+                    + pic
+                    + " from " 
+                    + self.path + "/" + pic 
+                    + " to "
+                    + self.destination_folder_path 
+                    + "/"
+                    + self._get_folder_name_from_filename(pic)
+                    + "/"
+                    + pic
+                    )
+            copyfile(self.path + "/" + pic, 
+                    self.destination_folder_path
+                    + "/"
+                    + self._get_folder_name_from_filename(pic)
+                    + "/"
+                    + pic
+                    )
         
 
 
