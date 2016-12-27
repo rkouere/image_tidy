@@ -4,6 +4,7 @@ import os
 import re
 import logging
 from shutil import copyfile
+import os.path
 
 class picutre_tidy(object):
     def __init__(self, path):
@@ -17,6 +18,7 @@ class picutre_tidy(object):
         self.pattern_file_name = ["jpg", "3gp"]
         self.pattern_get_folder_name = '[A-Za-z]*_(\d*)_.*'
         self.folder_names = []
+        self.overide_files = ""
         self.get_images()
         self.get_folder_names()
         self.folder_out = self.path
@@ -113,19 +115,25 @@ class picutre_tidy(object):
                 tmp_destination_folder += folder_name
                 tmp_destination_folder += "/"
                 tmp_destination_folder += pic
-                #if os.path.isfile(tmp_destination_folder)
-                logging.debug("copying file "
-                        + pic
-                        + " from " 
-                        + self.path + "/" + pic 
-                        + " to "
-                        + tmp_destination_folder 
-                        )
-                copyfile(self.path + "/" + pic, 
-                        tmp_destination_folder
-                        )
-                if self.unclassed_files:
-                    print("Could not class the following files: \n" + "\n".join(self.unclassed_files))
+                if os.path.isfile(tmp_destination_folder):
+                    if self.overide_files is "":
+                        #ask the user
+                        input("The file "
+                                + pic
+                                + " already exists. Do you want to keep it [Y/YA/N/NA] ?")
+                    elif self.overide_files is "YA":
+                        logging.debug("copying file "
+                                + pic
+                                + " from " 
+                                + self.path + "/" + pic 
+                                + " to "
+                                + tmp_destination_folder 
+                                )
+                        copyfile(self.path + "/" + pic, 
+                                tmp_destination_folder
+                                )
+                        if self.unclassed_files:
+                            print("Could not class the following files: \n" + "\n".join(self.unclassed_files))
 
     def move_unclassed_files_in_root_destination(self):
         for pic in self.unclassed_files:
