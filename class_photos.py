@@ -43,7 +43,7 @@ class picutre_tidy(object):
         if self.pattern_file_name.match(name) is not None:
             return True
 
-    def get_folder_name_from_filename(self, filename):
+    def _get_folder_name_from_filename(self, filename):
         '''
         Extract the date from the filename.
         If the pattern is found: returns the file name
@@ -68,8 +68,8 @@ class picutre_tidy(object):
         regex_result_tmp = ""
         date_tmp = ""
         for pic in self.pictures:
-            if self.get_folder_name_from_filename(pic) is not None:
-                self.folder_names.append(self.get_folder_name_from_filename(pic))
+            if self._get_folder_name_from_filename(pic) is not None:
+                self.folder_names.append(self._get_folder_name_from_filename(pic))
         logging.debug(self.folder_names)
 
     def add_out_folder(self, path):
