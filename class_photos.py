@@ -147,7 +147,7 @@ class picutre_tidy(object):
                 + "? [Y/N]")
         if delete_files[0] is "Y" or "y":
             if self.unclassed_files:
-                keep_unclassed_files = input("The following files have not been treated. Do you want to move them at the root of " 
+                keep_unclassed_files = input("The following files have not been treated (probably because they do not follow the required naming convention). Do you want to move them at the root of " 
                         + self.destination_folder_path
                         + "[Y/N]")
                 if keep_unclassed_files is "Y" or "y":
