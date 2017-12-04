@@ -2,7 +2,7 @@
 
 The aim of this program is to take the images from an android phone, extract the information regarding the date, create the necessary folders and move the images in the folders.
 
-It will work on any jpg or 3gp file which follows the following pattern: [any letter]_[year][month][day]_[anything]
+It will work on any jpg or 3gp file which follows the following pattern: [any letter][_-][year][month][day][_-][anything]
 
 Usage:
 ```

@@ -14,8 +14,8 @@ class picutre_tidy(object):
         self.path = self.check_path_without_slash(path)
         self.check_path_without_slash(path)
         self.unclassed_files = []
-        self.pattern_file_name = ["jpg", "3gp"]
-        self.pattern_get_folder_name = '[A-Za-z]*_(\d*)_.*'
+        self.pattern_file_name = ["jpg", "3gp", "mp4"]
+        self.pattern_get_folder_name = '[A-Za-z]*[_-](\d*)[_-].*'
         self.folder_names = []
         self.get_images()
         self.get_folder_names()
@@ -55,7 +55,7 @@ class picutre_tidy(object):
             m = re.search(self.pattern_get_folder_name, filename)
             if m is not None:
                 regex_result_tmp = m.group(1)
-                return regex_result_tmp[4:6] + "-" + regex_result_tmp[0:4]
+                return regex_result_tmp[0:4] + "-" + regex_result_tmp[4:6]
             else:
                 return None
         return None
