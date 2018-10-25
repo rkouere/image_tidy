@@ -15,7 +15,7 @@ class picutre_tidy(object):
         self.check_path_without_slash(path)
         self.unclassed_files = []
         self.pattern_file_name = ["jpg", "3gp", "mp4"]
-        self.pattern_get_folder_name = '[A-Za-z]*[_-](\d*)[_-].*'
+        self.pattern_get_folder_name = '[A-Za-z]*[_-]*(\d*)[_-].*'
         self.folder_names = []
         self.get_images()
         self.get_folder_names()
@@ -146,7 +146,7 @@ class picutre_tidy(object):
         delete_files = input( "Do you want to delete the original files from " 
                 + self.path
                 + "? [Y/N]")
-        logging.debug(delete_files[0])
+        logging.debug("result of the user input = " + delete_files[0])
         if delete_files[0] is "Y" or delete_files[0] is "y":
             if self.unclassed_files:
                 keep_unclassed_files = input("The following files have not been treated (probably because they do not follow the required naming convention). Do you want to move them at the root of " 
