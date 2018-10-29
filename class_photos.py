@@ -146,7 +146,7 @@ class picutre_tidy(object):
         delete_files = input( "Do you want to delete the original files from " 
                 + self.path
                 + "? [Y/N]")
-        logging.debug("result of the user input = " + delete_files[0])
+        logging.debug("result of the user input = " + delete_files)
         if delete_files[0] is "Y" or delete_files[0] is "y":
             if self.unclassed_files:
                 keep_unclassed_files = input("The following files have not been treated (probably because they do not follow the required naming convention). Do you want to move them at the root of " 
